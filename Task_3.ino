@@ -1,37 +1,31 @@
-String command;
-int lightPin = 8;
-int fanPin = 7;
+#include <LiquidCrystal.h>
+
+// Create LCD object: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+const int sensorPin = A0;
+float voltage, temperatureC;
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(lightPin, OUTPUT);
-  pinMode(fanPin, OUTPUT);
-  Serial.println("Enter command: Light On, Light Off, Fan On, Fan Off");
+  lcd.begin(16, 2);
+  lcd.print("TMP35 Temp:");
+  delay(1000);
 }
 
 void loop() {
-  if (Serial.available()) {
-    command = Serial.readStringUntil('\n');
-    command.trim();
+  int sensorValue = analogRead(sensorPin);
+  
+  // Convert ADC reading (0–1023) to voltage (0–5V)
+  voltage = sensorValue * (5.0 / 1023.0);
+  
+  // Convert voltage to temperature (TMP35 formula)
+  temperatureC = (voltage - 0.5) * 100.0;  // °C
+  
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(temperatureC);
+  lcd.print(" C");
 
-    if (command.equalsIgnoreCase("Light On")) {
-      digitalWrite(lightPin, HIGH);
-      Serial.println("Light turned ON");
-    } 
-    else if (command.equalsIgnoreCase("Light Off")) {
-      digitalWrite(lightPin, LOW);
-      Serial.println("Light turned OFF");
-    } 
-    else if (command.equalsIgnoreCase("Fan On")) {
-      digitalWrite(fanPin, HIGH);
-      Serial.println("Fan turned ON");
-    } 
-    else if (command.equalsIgnoreCase("Fan Off")) {
-      digitalWrite(fanPin, LOW);
-      Serial.println("Fan turned OFF");
-    } 
-    else {
-      Serial.println("Unknown command.");
-    }
-  }
+  delay(1000);
 }
