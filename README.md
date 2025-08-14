@@ -16,7 +16,7 @@
 **DESCRIPTION:**
 
 
-## 📌 Task 1: Temperature Sensor Reading & Display
+## 📌 Task 3: TEMPERATURE-MONITORING-SYSTEM
 
 This project reads ambient temperature using the **TMP35 analog temperature sensor** and displays the live readings on a **16x2 LCD display** using an **Arduino UNO**. The sensor output is analog and is processed using the Arduino’s ADC to calculate temperature in Celsius.
 
